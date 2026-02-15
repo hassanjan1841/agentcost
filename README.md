@@ -1,0 +1,247 @@
+# AgentCost 💰
+
+**Open-source cost tracking for AI APIs.**
+
+Stop overspending on OpenAI, Anthropic & Google. Get real-time visibility into your AI costs.
+
+[![npm version](https://img.shields.io/npm/v/@agentcost/sdk)](https://www.npmjs.com/package/@agentcost/sdk)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+[Demo](https://agentcost.dev) • [Docs](https://docs.agentcost.dev) • [Discord](https://discord.gg/agentcost)
+
+---
+
+## 🚀 Quick Start
+```bash
+npm install @agentcost/sdk
+```
+```typescript
+import { CostTracker } from '@agentcost/sdk';
+
+const tracker = new CostTracker({
+  projectId: 'your-project-id',
+  apiKey: 'your-api-key',
+});
+
+// Wrap your Anthropic client
+const anthropic = tracker.anthropic(process.env.ANTHROPIC_API_KEY);
+
+// Use normally - costs are tracked automatically!
+const response = await anthropic.messages.create({
+  model: 'claude-sonnet-4',
+  max_tokens: 1024,
+  messages: [{ role: 'user', content: 'Hello!' }],
+});
+
+// View costs in real-time at https://agentcost.dev
+```
+
+---
+
+## ✨ Features
+
+- 📊 **Real-time cost dashboard** - See spending as it happens
+- 💰 **Budget alerts** - Get notified before overspending
+- 🔍 **Request-level tracking** - Detailed cost breakdown per API call
+- 📈 **Cost projections** - Predict monthly spending
+- 🌐 **Multi-provider** - OpenAI, Anthropic, Google Gemini
+- 🔒 **Self-hosted option** - Keep your data private
+- 📤 **Export to CSV** - For accounting and analysis
+
+---
+
+## 🎯 Why AgentCost?
+
+Most developers have **no idea** how much they're spending on AI APIs until the bill arrives.
+
+**AgentCost solves this** with:
+- Real-time visibility (see costs as you code)
+- Zero code changes (drop-in SDK wrapper)
+- Beautiful dashboard (understand your spending)
+
+---
+
+## 📦 Installation
+
+### Option 1: Hosted (Recommended)
+
+1. Sign up at [agentcost.dev](https://agentcost.dev)
+2. Create a project and get your API key
+3. Install SDK:
+```bash
+   npm install @agentcost/sdk
+```
+
+### Option 2: Self-Hosted
+
+1. Clone the repo:
+```bash
+   git clone https://github.com/yourusername/agentcost
+   cd agentcost
+```
+
+2. Install dependencies:
+```bash
+   pnpm install
+```
+
+3. Build the SDK:
+```bash
+   pnpm build:sdk
+```
+
+4. Deploy the dashboard (coming soon in Phase 2)
+
+---
+
+## 📖 Usage
+
+### Anthropic (Claude)
+```typescript
+import { CostTracker } from '@agentcost/sdk';
+
+const tracker = new CostTracker({
+  projectId: 'proj_abc123',
+  apiKey: 'ak_xyz789',
+});
+
+const anthropic = tracker.anthropic(process.env.ANTHROPIC_API_KEY);
+
+const response = await anthropic.messages.create({
+  model: 'claude-sonnet-4',
+  max_tokens: 1024,
+  messages: [{ role: 'user', content: 'Write a haiku about TypeScript' }],
+});
+
+console.log(response.content);
+// Cost is automatically tracked! ✅
+```
+
+### OpenAI
+```typescript
+const openai = tracker.openai(process.env.OPENAI_API_KEY);
+
+const response = await openai.chat.completions.create({
+  model: 'gpt-4-turbo',
+  messages: [{ role: 'user', content: 'Explain quantum computing' }],
+});
+
+console.log(response.choices[0].message.content);
+// Cost is automatically tracked! ✅
+```
+
+### Google Gemini
+```typescript
+const gemini = tracker.google(process.env.GOOGLE_API_KEY);
+
+const response = await gemini.generateContent({
+  model: 'gemini-pro',
+  contents: [{ role: 'user', parts: [{ text: 'Hello!' }] }],
+});
+
+console.log(response.candidates[0].content.parts[0].text);
+// Cost is automatically tracked! ✅
+```
+
+---
+
+## 🧪 Testing Without API Keys
+
+You can test AgentCost without spending money using our mock clients:
+```typescript
+import {
+  CostTracker,
+  MockAnthropicClient,
+  MockOpenAIClient,
+  MockGeminiClient,
+} from '@agentcost/sdk';
+
+const tracker = new CostTracker({
+  projectId: 'test-project',
+  apiKey: 'test-key',
+  debug: true,
+});
+
+// Use mock clients for development
+const mockAnthropic = new MockAnthropicClient();
+
+const response = await mockAnthropic.messages.create({
+  model: 'claude-sonnet-4',
+  max_tokens: 100,
+  messages: [{ role: 'user', content: 'Hello!' }],
+});
+
+// Costs are still tracked using mock token counts! ✅
+```
+
+### Run Test Suite
+```bash
+cd packages/sdk
+
+# Test all providers with mocks
+pnpm test:mocks
+
+# Test cost tracking logic
+pnpm test:tracking
+```
+
+---
+
+## 🔧 Configuration
+```typescript
+const tracker = new CostTracker({
+  projectId: 'your-project-id',    // Required
+  apiKey: 'your-api-key',          // Required
+  endpoint: 'https://custom.com',  // Optional (default: api.agentcost.dev)
+  batchSize: 10,                   // Optional (default: 10 events)
+  flushInterval: 5000,             // Optional (default: 5000ms)
+  debug: false,                    // Optional (default: false)
+});
+```
+
+---
+
+## 🏗️ How It Works
+
+1. **SDK wraps official clients** - Zero changes to your code
+2. **Intercepts API responses** - Extracts token usage
+3. **Calculates costs** - Based on current pricing (updated monthly)
+4. **Batches events** - Sends to dashboard every 5s or 10 events
+5. **Real-time display** - Beautiful dashboard shows costs instantly
+
+**Privacy:** Only aggregated metrics are sent (tokens, cost, model). Your prompts/responses stay private.
+
+---
+
+## 📊 Pricing
+
+- **Free**: Self-hosted, unlimited projects
+- **Pro ($29/mo)**: Hosted, team features, priority support
+- **Enterprise ($299/mo)**: SSO, SLA, custom deployment
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+---
+
+## 📄 License
+
+MIT - see [LICENSE](LICENSE) file
+
+---
+
+## 🙏 Credits
+
+Built with:
+- [Next.js](https://nextjs.org) - Dashboard framework
+- [Anthropic SDK](https://github.com/anthropics/anthropic-sdk-typescript) - Claude API
+- [Vercel](https://vercel.com) - Deployment
+
+---
+
+**Made with ❤️ by developers tired of surprise AI bills**
+
+⭐ Star us on GitHub if this saves you money!

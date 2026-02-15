@@ -1,0 +1,42 @@
+{
+  "name": "@agentcost/sdk",
+  "version": "0.2.0",
+  "description": "Cost tracking SDK for AI APIs",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "type-check": "tsc --noEmit",
+    "test:mocks": "tsx examples/test-all-providers.ts",
+    "test:tracking": "tsx examples/test-with-tracking.ts"
+  },
+  "keywords": [
+    "ai",
+    "cost-tracking",
+    "anthropic",
+    "claude",
+    "openai",
+    "gemini",
+    "monitoring"
+  ],
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.1"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.3.3"
+  },
+  "peerDependencies": {
+    "@anthropic-ai/sdk": ">=0.30.0"
+  }
+}

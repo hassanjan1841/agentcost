@@ -1,0 +1,257 @@
+# ============================================================================
+# Dependencies & Package Managers
+# ============================================================================
+node_modules/
+.pnp
+.pnp.js
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+*.lock
+
+# ============================================================================
+# Build & Output Directories
+# ============================================================================
+# Root
+dist/
+build/
+
+# SDK build outputs
+packages/sdk/dist/
+packages/sdk/build/
+packages/sdk/.turbo/
+
+# Dashboard build outputs
+apps/dashboard/.next/
+apps/dashboard/out/
+apps/dashboard/build/
+apps/dashboard/.turbo/
+
+# Build info files
+*.tsbuildinfo
+.turbo/
+
+# ============================================================================
+# Runtime & Logs
+# ============================================================================
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Runtime data
+.runtime/
+*.pid
+*.seed
+*.pid.lock
+
+# ============================================================================
+# Environment Variables (SECRETS - NEVER COMMIT)
+# ============================================================================
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+.env.staging
+.env.test
+.env.*.secret
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# ============================================================================
+# IDE & Editor Configuration
+# ============================================================================
+# VS Code
+.vscode/
+.vscode/*.json
+!.vscode/extensions.json
+!.vscode/settings.json.example
+
+# JetBrains IDEs
+.idea/
+.idea_modules/
+*.iml
+*.iws
+*.ipr
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Vim/Neovim
+*.swp
+*.swo
+*~
+.vim/
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# nano
+.nano_history
+
+# ============================================================================
+# OS & System Files
+# ============================================================================
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini
+
+# Windows
+Thumbs.db
+ehthumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+.cache/
+.local/
+
+# ============================================================================
+# Testing
+# ============================================================================
+coverage/
+.nyc_output/
+.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+.mocha.opts
+
+# ============================================================================
+# Temporary & Cache Files
+# ============================================================================
+# Node
+npm-cache/
+yarn-cache/
+pnpm-store/
+
+# TypeScript
+tsconfig.tsbuildinfo
+
+# Next.js
+apps/dashboard/.next
+apps/dashboard/out
+apps/dashboard/.cache
+.turbo/
+
+# ESLint cache
+.eslintcache
+
+# Prettier cache
+.prettierignore
+
+# Misc
+*.bak
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# ============================================================================
+# Docker
+# ============================================================================
+.docker/
+docker-compose.override.yml
+
+# ============================================================================
+# Development Tools
+# ============================================================================
+# pnpm
+pnpm-debug.log
+pnpm-error.log
+
+# Turbo
+.turbo/
+
+# Local development
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# ============================================================================
+# Project Specific
+# ============================================================================
+# Database backups
+*.dump
+*.sql
+
+# API keys / credentials (if accidentally created)
+.aws/
+.gcp/
+credentials.json
+secrets.json
+
+# Generated files (do not commit)
+apps/dashboard/lib/schema.sql.bak
+
+# Stitch project (design tool)
+.stitch-project.json
+
+# ============================================================================
+# CI/CD
+# ============================================================================
+.github/workflows/logs/
+.gitlab-ci/logs/
+.circleci/logs/
+
+# ============================================================================
+# Documentation Generated Files
+# ============================================================================
+docs/_build/
+docs/site/
+site/
+
+# ============================================================================
+# Package-specific ignores
+# ============================================================================
+# SDK Examples (test only)
+packages/sdk/examples/dist/
+packages/sdk/examples/**/*.log
+
+# Dashboard examples
+apps/dashboard/examples/dist/
+apps/dashboard/public/generated/
+
+# ============================================================================
+# Archive files
+# ============================================================================
+*.zip
+*.tar
+*.tar.gz
+*.tar.bz2
+*.rar
+*.7z
+
+# ============================================================================
+# Backup files
+# ============================================================================
+*.backup
+*.bak
+*.old
+*.swp
+*~
+
+# ============================================================================
+# Comments/Notes (if tracked)
+# ============================================================================
+# Keep track of local notes that shouldn't be committed
+notes.md
+todo-local.md
+scratch.md

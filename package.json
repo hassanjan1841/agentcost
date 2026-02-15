@@ -1,0 +1,22 @@
+{
+  "name": "agentcost",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter dashboard dev",
+    "dev:sdk": "pnpm --filter @agentcost/sdk dev",
+    "dev:dashboard": "pnpm --filter dashboard dev",
+    "build": "pnpm -r build",
+    "build:sdk": "pnpm --filter @agentcost/sdk build",
+    "build:dashboard": "pnpm --filter dashboard build",
+    "start": "pnpm --filter dashboard start",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "type-check": "pnpm -r type-check"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "@types/node": "^20.10.0",
+    "tsup": "^8.0.1"
+  }
+}
