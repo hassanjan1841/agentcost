@@ -5,10 +5,10 @@
 Stop overspending on OpenAI, Anthropic & Google. Get real-time visibility into your AI costs.
 
 [![npm version](https://img.shields.io/npm/v/@agentcost/sdk)](https://www.npmjs.com/package/@agentcost/sdk)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![GitHub stars](https://img.shields.io/github/stars/yourusername/agentcost)](https://github.com/yourusername/agentcost)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/hassanjan1841/agentcost)](https://github.com/hassanjan1841/agentcost)
 
-[Demo](https://agentcost.dev) • [Docs](#documentation) • [Discord](https://discord.gg/agentcost)
+[GitHub](https://github.com/hassanjan1841/agentcost) • [Docs](#documentation)
 
 ---
 
@@ -81,7 +81,7 @@ const response = await anthropic.messages.create({
 
 1. Clone the repo:
 ```bash
-   git clone https://github.com/yourusername/agentcost
+   git clone https://github.com/hassanjan1841/agentcost
    cd agentcost
 ```
 
@@ -242,14 +242,6 @@ const tracker = new CostTracker({
 
 ---
 
-## 📊 Pricing
-
-- **Free**: Self-hosted, unlimited projects
-- **Pro ($29/mo)**: Hosted, team features, priority support
-- **Enterprise ($299/mo)**: SSO, SLA, custom deployment
-
----
-
 ## 📊 Pricing (Feb 2025)
 
 The SDK uses these rates for cost calculation:
@@ -301,4 +293,4 @@ Built with:
 
 **Made with ❤️ by developers, for developers.**
 
-[Get Started](https://agentcost.dev) • [View Demo](https://demo.agentcost.dev) • [Join Discord](https://discord.gg/agentcost)
+[GitHub](https://github.com/hassanjan1841/agentcost) • [npm](https://www.npmjs.com/package/@agentcost/sdk)
