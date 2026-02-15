@@ -31,12 +31,13 @@ export function CostChart({ data }: CostChartProps) {
        <CardContent>
          <ResponsiveContainer width="100%" height={300}>
            <LineChart data={chartData}>
-             <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-             <XAxis dataKey="date" stroke="#666" />
-             <YAxis stroke="#666" />
+             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+             <XAxis dataKey="date" stroke="#9ca3af" tick={{ fill: '#6b7280', fontSize: 12 }} />
+             <YAxis stroke="#9ca3af" tick={{ fill: '#6b7280', fontSize: 12 }} />
              <Tooltip 
                formatter={(value: number) => `$${value.toFixed(4)}`}
-               contentStyle={{ backgroundColor: '#f9fafb', border: '1px solid #e5e7eb' }}
+               contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e7eb', borderRadius: '6px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}
+               labelStyle={{ color: '#374151' }}
              />
              <Line 
                type="monotone" 

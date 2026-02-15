@@ -56,7 +56,7 @@ export function RecentRequests({ data }: RecentRequestsProps) {
                 const createdDate = new Date(request.createdAt);
                 return (
                   <TableRow key={request.id}>
-                    <TableCell className="font-mono text-xs">
+                    <TableCell className="font-mono text-xs text-gray-700">
                       {createdDate.toLocaleTimeString()}
                     </TableCell>
                     <TableCell>
@@ -64,16 +64,16 @@ export function RecentRequests({ data }: RecentRequestsProps) {
                         {request.provider}
                       </Badge>
                     </TableCell>
-                    <TableCell className="font-mono text-xs">
+                    <TableCell className="font-mono text-xs text-gray-700">
                       {request.model}
                     </TableCell>
-                    <TableCell className="text-right text-xs">
+                    <TableCell className="text-right text-xs text-gray-700">
                       {request.inputTokens.toLocaleString()} + {request.outputTokens.toLocaleString()}
                     </TableCell>
-                    <TableCell className="text-right font-semibold">
+                    <TableCell className="text-right font-semibold text-gray-900">
                       ${request.cost.toFixed(6)}
                     </TableCell>
-                    <TableCell className="text-right text-xs text-gray-500">
+                    <TableCell className="text-right text-xs text-gray-600">
                        {request.duration}ms
                      </TableCell>
                   </TableRow>

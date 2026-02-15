@@ -39,11 +39,11 @@ export function ProviderBreakdown({ data }: ProviderBreakdownProps) {
                      <Badge variant="outline" className="capitalize">
                        {item.provider}
                      </Badge>
-                     <span className="text-sm text-gray-500">
+                     <span className="text-sm text-gray-600">
                        {item.requests} requests
                      </span>
                    </div>
-                  <span className="font-semibold">
+                  <span className="font-semibold text-gray-900">
                     ${item.cost.toFixed(4)}
                   </span>
                 </div>
