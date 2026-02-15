@@ -112,12 +112,12 @@ export default function DashboardPage() {
               <div className="space-y-3">
                 {data.costByModel.slice(0, 5).map((item: any) => (
                   <div key={item.model} className="flex items-center justify-between">
-                    <span className="font-mono text-sm">{item.model}</span>
-                    <span className="font-semibold">${item.cost.toFixed(4)}</span>
+                    <span className="font-mono text-sm text-gray-700">{item.model}</span>
+                    <span className="font-semibold text-gray-900">${item.cost.toFixed(4)}</span>
                   </div>
                 ))}
                 {data.costByModel.length === 0 && (
-                  <p className="text-sm text-gray-500">No data yet</p>
+                  <p className="text-sm text-gray-600">No data yet</p>
                 )}
               </div>
             </CardContent>

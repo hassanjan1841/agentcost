@@ -122,9 +122,9 @@ export function BudgetWidget() {
                 value={formData.alertThreshold}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, alertThreshold: e.target.value })}
               />
-              <p className="text-xs text-muted-foreground mt-1">
-                Alert when {(parseFloat(formData.alertThreshold) * 100).toFixed(0)}% of budget is used
-              </p>
+              <p className="text-xs text-gray-600 mt-1">
+                 Alert when {(parseFloat(formData.alertThreshold) * 100).toFixed(0)}% of budget is used
+               </p>
             </div>
 
             <div>
@@ -150,10 +150,10 @@ export function BudgetWidget() {
         )}
 
         {budgets?.budgets.length === 0 && !showForm && (
-          <div className="text-center py-8 text-muted-foreground">
-            <AlertCircle className="h-8 w-8 mx-auto mb-2 opacity-50" />
-            <p>No budgets set up yet</p>
-            <p className="text-sm">Click "Add Budget" to create one</p>
+          <div className="text-center py-8 text-gray-600">
+            <AlertCircle className="h-8 w-8 mx-auto mb-2 opacity-50 text-gray-400" />
+            <p className="text-gray-700">No budgets set up yet</p>
+            <p className="text-sm text-gray-600">Click "Add Budget" to create one</p>
           </div>
         )}
 
@@ -161,8 +161,8 @@ export function BudgetWidget() {
           {budgets?.budgets.map((budget: any) => (
             <div key={budget.id} className="flex items-center justify-between p-3 border rounded-lg">
               <div>
-                <p className="font-semibold">${budget.limitAmount} / {budget.period}</p>
-                <p className="text-sm text-muted-foreground">
+                <p className="font-semibold text-gray-900">${budget.limitAmount} / {budget.period}</p>
+                <p className="text-sm text-gray-600">
                   Alert at {(budget.alertThreshold * 100).toFixed(0)}%
                   {budget.email && ` • ${budget.email}`}
                 </p>
