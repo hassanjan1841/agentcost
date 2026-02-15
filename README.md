@@ -6,8 +6,34 @@ Stop overspending on OpenAI, Anthropic & Google. Get real-time visibility into y
 
 [![npm version](https://img.shields.io/npm/v/@agentcost/sdk)](https://www.npmjs.com/package/@agentcost/sdk)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GitHub stars](https://img.shields.io/github/stars/yourusername/agentcost)](https://github.com/yourusername/agentcost)
 
-[Demo](https://agentcost.dev) • [Docs](https://docs.agentcost.dev) • [Discord](https://discord.gg/agentcost)
+[Demo](https://agentcost.dev) • [Docs](#documentation) • [Discord](https://discord.gg/agentcost)
+
+---
+
+## 🎯 The Problem
+
+Most developers have **no idea** how much they're spending on AI APIs until the bill arrives.
+
+- 💸 Surprise bills of $500+ per month
+- 🤷 No visibility into which features cost the most
+- 📈 Costs spiral out of control quickly
+- 🚫 No way to set budget limits
+
+---
+
+## ✨ The Solution
+
+**AgentCost** gives you:
+
+- 📊 **Real-time cost dashboard** - See spending as it happens
+- 💰 **Budget alerts** - Get notified before overspending  
+- 🔍 **Request-level tracking** - Detailed breakdown per API call
+- 📈 **Cost projections** - Predict monthly spending
+- 🌐 **Multi-provider** - OpenAI, Anthropic, Google Gemini
+- 🔒 **Self-hosted** - Keep your data private
+- 📤 **Export to CSV** - For accounting and analysis
 
 ---
 
@@ -37,27 +63,6 @@ const response = await anthropic.messages.create({
 ```
 
 ---
-
-## ✨ Features
-
-- 📊 **Real-time cost dashboard** - See spending as it happens
-- 💰 **Budget alerts** - Get notified before overspending
-- 🔍 **Request-level tracking** - Detailed cost breakdown per API call
-- 📈 **Cost projections** - Predict monthly spending
-- 🌐 **Multi-provider** - OpenAI, Anthropic, Google Gemini
-- 🔒 **Self-hosted option** - Keep your data private
-- 📤 **Export to CSV** - For accounting and analysis
-
----
-
-## 🎯 Why AgentCost?
-
-Most developers have **no idea** how much they're spending on AI APIs until the bill arrives.
-
-**AgentCost solves this** with:
-- Real-time visibility (see costs as you code)
-- Zero code changes (drop-in SDK wrapper)
-- Beautiful dashboard (understand your spending)
 
 ---
 
@@ -90,7 +95,8 @@ Most developers have **no idea** how much they're spending on AI APIs until the 
    pnpm build:sdk
 ```
 
-4. Deploy the dashboard (coming soon in Phase 2)
+4. Deploy the dashboard
+5. Set up budget alerts
 
 ---
 
@@ -142,6 +148,29 @@ const response = await gemini.generateContent({
 console.log(response.candidates[0].content.parts[0].text);
 // Cost is automatically tracked! ✅
 ```
+
+---
+
+## 💰 Budget Alerts
+
+Set up email alerts when you approach spending limits:
+
+1. Go to Dashboard → Budget Alerts
+2. Click "Add Budget"
+3. Set your limit (e.g., $100/month)
+4. Add your email
+5. Get notified at 80% usage
+
+---
+
+## 📤 Export to CSV
+
+Export your cost data for accounting and analysis:
+
+1. Go to Dashboard
+2. Click "Export CSV"
+3. Choose time range (24h, 7d, 30d)
+4. Save the file
 
 ---
 
@@ -221,6 +250,34 @@ const tracker = new CostTracker({
 
 ---
 
+## 📊 Pricing (Feb 2025)
+
+The SDK uses these rates for cost calculation:
+
+| Provider | Model | Input (per 1M) | Output (per 1M) |
+|----------|-------|----------------|-----------------|
+| Anthropic | Claude Opus 4 | $15.00 | $75.00 |
+| Anthropic | Claude Sonnet 4 | $3.00 | $15.00 |
+| Anthropic | Claude Haiku 4 | $0.80 | $4.00 |
+| OpenAI | GPT-4 Turbo | $10.00 | $30.00 |
+| OpenAI | GPT-4o | $2.50 | $10.00 |
+| Google | Gemini Pro | $0.125 | $0.375 |
+
+*Pricing updated monthly. See [packages/sdk/src/pricing.ts](packages/sdk/src/pricing.ts) for full list.*
+
+---
+
+## 🛠️ Tech Stack
+
+- **SDK**: TypeScript, Node.js
+- **Dashboard**: Next.js 15, React, TailwindCSS
+- **Database**: Vercel Postgres
+- **Charts**: Recharts
+- **UI**: shadcn/ui
+- **Deployment**: Vercel
+
+---
+
 ## 🤝 Contributing
 
 We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
@@ -242,6 +299,6 @@ Built with:
 
 ---
 
-**Made with ❤️ by developers tired of surprise AI bills**
+**Made with ❤️ by developers, for developers.**
 
-⭐ Star us on GitHub if this saves you money!
+[Get Started](https://agentcost.dev) • [View Demo](https://demo.agentcost.dev) • [Join Discord](https://discord.gg/agentcost)

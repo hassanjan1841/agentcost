@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@/lib/db';
+import { checkBudgets } from '@/lib/budget-checker';
 
 interface TrackEventBody {
   events: Array<{
@@ -66,24 +67,27 @@ export async function POST(request: NextRequest) {
 
     // Batch insert
     for (const event of values) {
-      await sql`
-        INSERT INTO events (
-          project_id, provider, model, input_tokens, 
-          output_tokens, cost, duration, timestamp, metadata
-        )
-        VALUES (
-          ${event.project_id}, ${event.provider}, ${event.model},
-          ${event.input_tokens}, ${event.output_tokens}, ${event.cost},
-          ${event.duration}, ${event.timestamp}, ${JSON.stringify(event.metadata)}
-        )
-      `;
+     await sql`
+       INSERT INTO events (
+         project_id, provider, model, input_tokens, 
+         output_tokens, cost, duration, timestamp, metadata
+       )
+       VALUES (
+         ${event.project_id}, ${event.provider}, ${event.model},
+         ${event.input_tokens}, ${event.output_tokens}, ${event.cost},
+         ${event.duration}, ${event.timestamp}, ${JSON.stringify(event.metadata)}
+       )
+     `;
     }
+
+    // Check budgets after inserting events
+    await checkBudgets(projectId);
 
     console.log(`✅ Tracked ${body.events.length} events for project ${projectId}`);
 
     return NextResponse.json({ 
-      success: true,
-      tracked: body.events.length 
+     success: true,
+     tracked: body.events.length 
     });
 
   } catch (error) {

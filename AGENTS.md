@@ -73,5 +73,8 @@ npx tsx scripts/seed-demo-data.ts             # Seed demo data
 - **README.md** - Project overview, quick start, features, installation, usage examples
 - **QUICKSTART.md** - Minimal 2-minute setup, code examples, config options, API reference
 - **PHASE_1A_COMPLETE.md** - Architecture details, features implemented, next steps
+- **PHASE_3_COMPLETE.md** - Budget alerts, CSV export, launch-ready features
+- **PRODUCTION_READINESS.md** - Missing features, production checklist, timeline (READ THIS!)
+- **LAUNCH.md** - Launch strategy, hour-by-hour checklist
 - **AGENTS.md** - This file - build commands, architecture, code style for agents
 - Update docs when adding features, APIs, or significant changes. Use clear examples.
