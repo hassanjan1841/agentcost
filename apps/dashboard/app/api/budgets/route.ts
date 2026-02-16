@@ -1,9 +1,49 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { sql, getDemoProject } from '@/lib/db';
+import { sql } from '@/lib/db';
+import { verifyJWT } from '@/lib/auth';
 
 export async function GET(request: NextRequest) {
   try {
-    const project = await getDemoProject();
+    // Get auth token from cookies
+    const token = request.cookies.get('auth_token')?.value;
+    
+    if (!token) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    // Verify JWT and get user ID
+    const decoded = verifyJWT(token);
+    if (!decoded || !decoded.userId) {
+      return NextResponse.json(
+        { error: 'Invalid token' },
+        { status: 401 }
+      );
+    }
+
+    const { searchParams } = new URL(request.url);
+    const projectId = searchParams.get('projectId');
+
+    if (!projectId) {
+      return NextResponse.json(
+        { error: 'Project ID required' },
+        { status: 400 }
+      );
+    }
+
+    // Verify user owns this project
+    const projectCheck = await sql`
+      SELECT id FROM projects WHERE id = ${projectId} AND owner_id = ${decoded.userId}
+    `;
+
+    if (projectCheck.rows.length === 0) {
+      return NextResponse.json(
+        { error: 'Project not found or unauthorized' },
+        { status: 403 }
+      );
+    }
     
     const budgets = await sql`
       SELECT 
@@ -17,7 +57,7 @@ export async function GET(request: NextRequest) {
         enabled,
         created_at as "createdAt"
       FROM budgets
-      WHERE project_id = ${project.id}
+      WHERE project_id = ${projectId}
       ORDER BY created_at DESC
     `;
 
@@ -36,10 +76,46 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const project = await getDemoProject();
-    const body = await request.json();
+    // Get auth token from cookies
+    const token = request.cookies.get('auth_token')?.value;
+    
+    if (!token) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
 
-    const { limitAmount, period, alertThreshold, email, webhookUrl } = body;
+    // Verify JWT and get user ID
+    const decoded = verifyJWT(token);
+    if (!decoded || !decoded.userId) {
+      return NextResponse.json(
+        { error: 'Invalid token' },
+        { status: 401 }
+      );
+    }
+
+    const body = await request.json();
+    const { projectId, limitAmount, period, alertThreshold, email, webhookUrl } = body;
+
+    if (!projectId) {
+      return NextResponse.json(
+        { error: 'Project ID required' },
+        { status: 400 }
+      );
+    }
+
+    // Verify user owns this project
+    const projectCheck = await sql`
+      SELECT id FROM projects WHERE id = ${projectId} AND owner_id = ${decoded.userId}
+    `;
+
+    if (projectCheck.rows.length === 0) {
+      return NextResponse.json(
+        { error: 'Project not found or unauthorized' },
+        { status: 403 }
+      );
+    }
 
     // Validation
     if (!limitAmount || limitAmount <= 0) {
@@ -59,11 +135,11 @@ export async function POST(request: NextRequest) {
     const result = await sql`
       INSERT INTO budgets (
         project_id, limit_amount, period, alert_threshold,
-        email, webhook_url, enabled
+        email, webhook_url, enabled, user_id
       )
       VALUES (
-        ${project.id}, ${limitAmount}, ${period}, ${alertThreshold || 0.8},
-        ${email || null}, ${webhookUrl || null}, true
+        ${projectId}, ${limitAmount}, ${period}, ${alertThreshold || 0.8},
+        ${email || null}, ${webhookUrl || null}, true, ${decoded.userId}
       )
       RETURNING 
         id::TEXT,
@@ -89,6 +165,25 @@ export async function POST(request: NextRequest) {
 
 export async function DELETE(request: NextRequest) {
   try {
+    // Get auth token from cookies
+    const token = request.cookies.get('auth_token')?.value;
+    
+    if (!token) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
+    }
+
+    // Verify JWT and get user ID
+    const decoded = verifyJWT(token);
+    if (!decoded || !decoded.userId) {
+      return NextResponse.json(
+        { error: 'Invalid token' },
+        { status: 401 }
+      );
+    }
+
     const { searchParams } = new URL(request.url);
     const budgetId = searchParams.get('id');
 
@@ -96,6 +191,20 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json(
         { error: 'Budget ID required' },
         { status: 400 }
+      );
+    }
+
+    // Verify user owns this budget (through project)
+    const budgetCheck = await sql`
+      SELECT b.id FROM budgets b
+      JOIN projects p ON b.project_id = p.id
+      WHERE b.id = ${budgetId} AND p.owner_id = ${decoded.userId}
+    `;
+
+    if (budgetCheck.rows.length === 0) {
+      return NextResponse.json(
+        { error: 'Budget not found or unauthorized' },
+        { status: 403 }
       );
     }
 
