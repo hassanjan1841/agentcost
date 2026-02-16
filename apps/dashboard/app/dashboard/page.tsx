@@ -68,13 +68,13 @@ export default function DashboardPage() {
     );
   }
 
-  if (error) {
+  if (error || !data) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <p className="text-red-600 font-semibold">Failed to load dashboard</p>
           <p className="text-sm text-gray-600 mt-2">
-            Make sure your database is set up correctly
+            {error?.message || 'No project data available'}
           </p>
         </div>
       </div>
