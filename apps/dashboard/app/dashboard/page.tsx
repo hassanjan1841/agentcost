@@ -26,14 +26,18 @@ export default function DashboardPage() {
   }, [user, authLoading, router]);
 
   // Fetch user's first project
-  const { data: projectsData } = useQuery({
+  const { data: projectsData, error: projectsError } = useQuery({
     queryKey: ['projects'],
     queryFn: async () => {
       const res = await fetch('/api/projects');
-      if (!res.ok) throw new Error('Failed to fetch projects');
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || `Failed to fetch projects: ${res.status}`);
+      }
       return res.json();
     },
     enabled: !!user,
+    retry: 2,
   });
 
   useEffect(() => {
@@ -68,14 +72,15 @@ export default function DashboardPage() {
     );
   }
 
-  if (error || !data) {
+  if (projectsError || error || !data) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <p className="text-red-600 font-semibold">Failed to load dashboard</p>
           <p className="text-sm text-gray-600 mt-2">
-            {error?.message || 'No project data available'}
+            {projectsError?.message || error?.message || 'No project data available'}
           </p>
+          <p className="text-xs text-gray-500 mt-4">ProjectID: {projectId || 'Not set'}</p>
         </div>
       </div>
     );
