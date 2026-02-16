@@ -22,7 +22,9 @@ export function BudgetWidget() {
   const { data: budgets } = useQuery({
     queryKey: ['budgets'],
     queryFn: async () => {
-      const res = await fetch('/api/budgets');
+      const res = await fetch('/api/budgets', {
+        credentials: 'include',
+      });
       return res.json();
     },
   });
@@ -31,6 +33,7 @@ export function BudgetWidget() {
     mutationFn: async (data: any) => {
       const res = await fetch('/api/budgets', {
         method: 'POST',
+        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
@@ -47,6 +50,7 @@ export function BudgetWidget() {
     mutationFn: async (id: string) => {
       const res = await fetch(`/api/budgets?id=${id}`, {
         method: 'DELETE',
+        credentials: 'include',
       });
       return res.json();
     },

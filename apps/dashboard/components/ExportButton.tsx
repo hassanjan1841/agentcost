@@ -14,7 +14,9 @@ export function ExportButton({ timeRange }: ExportButtonProps) {
   const handleExport = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/export?range=${timeRange}`);
+      const res = await fetch(`/api/export?range=${timeRange}`, {
+        credentials: 'include',
+      });
       const blob = await res.blob();
       
       const url = window.URL.createObjectURL(blob);

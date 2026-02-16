@@ -30,6 +30,7 @@ function VerifyContent() {
       try {
         const res = await fetch('/api/auth/verify', {
           method: 'POST',
+        credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ token }),
         });

@@ -35,7 +35,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const refreshUser = useCallback(async () => {
     try {
       const res = await fetch('/api/auth/me', {
-        
+        credentials: 'include',
       });
       if (res.ok) {
         const data = await res.json();
@@ -56,7 +56,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const res = await fetch('/api/auth/login', {
         method: 'POST',
-        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
@@ -75,7 +74,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
-        credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, fullName }),
       });
@@ -91,7 +89,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = useCallback(async () => {
     try {
-      await fetch('/api/auth/logout', { method: 'POST' });
+      await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
     } catch {
       // ignore
     }
