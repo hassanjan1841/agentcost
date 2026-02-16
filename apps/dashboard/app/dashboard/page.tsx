@@ -17,6 +17,7 @@ export default function DashboardPage() {
   const router = useRouter();
   const { user, loading: authLoading, logout } = useAuth();
   const [timeRange, setTimeRange] = useState<'24h' | '7d' | '30d'>('7d');
+  const [projectId, setProjectId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -24,14 +25,32 @@ export default function DashboardPage() {
     }
   }, [user, authLoading, router]);
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['metrics', timeRange],
+  // Fetch user's first project
+  const { data: projectsData } = useQuery({
+    queryKey: ['projects'],
     queryFn: async () => {
-      const res = await fetch(`/api/costs?range=${timeRange}`);
+      const res = await fetch('/api/projects');
+      if (!res.ok) throw new Error('Failed to fetch projects');
+      return res.json();
+    },
+    enabled: !!user,
+  });
+
+  useEffect(() => {
+    if (projectsData?.projects && projectsData.projects.length > 0) {
+      setProjectId(projectsData.projects[0].id);
+    }
+  }, [projectsData]);
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['metrics', timeRange, projectId],
+    queryFn: async () => {
+      const res = await fetch(`/api/costs?range=${timeRange}&projectId=${projectId}`);
       if (!res.ok) throw new Error('Failed to fetch');
       return res.json();
     },
     refetchInterval: 5000, // Refresh every 5 seconds
+    enabled: !!projectId,
   });
 
   if (authLoading || !user) {
