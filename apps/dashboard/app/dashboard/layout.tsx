@@ -5,6 +5,7 @@ import { useState } from 'react';
 
 import { Sidebar } from '@/components/dashboard/Sidebar';
 import { UserDropdown } from '@/components/dashboard/UserDropdown';
+import { MobileSidebar } from '@/components/dashboard/MobileSidebar';
 
 export default function DashboardLayout({
   children,
@@ -18,8 +19,11 @@ export default function DashboardLayout({
       <div className="flex h-screen w-full overflow-hidden bg-white">
         <Sidebar />
         <div className="flex flex-1 flex-col overflow-hidden">
-          <header className="flex h-14 items-center justify-between border-b bg-white px-6">
-            <h2 className="text-lg font-semibold">Overview</h2>
+          <header className="flex h-14 items-center justify-between border-b bg-white px-4 md:px-6">
+            <div className="flex items-center gap-4">
+              <MobileSidebar />
+              <h2 className="text-lg font-semibold">Overview</h2>
+            </div>
             <div className="flex items-center gap-4">
               <UserDropdown />
             </div>

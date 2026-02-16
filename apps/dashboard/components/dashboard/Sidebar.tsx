@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-const navigation = [
+export const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Projects', href: '/dashboard/projects', icon: FolderKanban },
   { name: 'Settings', href: '/dashboard/settings', icon: Settings },
@@ -22,7 +22,7 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <div className="flex h-full w-64 flex-col border-r bg-gray-50/40">
+    <div className="hidden border-r bg-gray-50/40 md:flex md:w-64 md:flex-col">
       <div className="flex h-14 items-center border-b px-6">
         <Link href="/dashboard" className="flex items-center gap-2 font-semibold">
           <Building2 className="h-6 w-6" />
