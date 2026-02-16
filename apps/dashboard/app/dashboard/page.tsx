@@ -93,34 +93,24 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-white p-8">
       <div className="max-w-7xl mx-auto space-y-8">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-4xl font-bold text-gray-900">AgentCost Dashboard</h1>
-            <p className="text-gray-600 mt-1">
-              Welcome, {user.fullName}
-            </p>
-          </div>
-          
-          <div className="flex items-center gap-4">
-            <Select value={timeRange} onValueChange={(v: any) => setTimeRange(v)}>
-              <SelectTrigger className="w-32">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="24h">Last 24h</SelectItem>
-                <SelectItem value="7d">Last 7 days</SelectItem>
-                <SelectItem value="30d">Last 30 days</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button variant="ghost" size="sm" onClick={() => logout().then(() => router.push('/auth/login'))}>
-              <LogOut className="h-4 w-4 mr-2" />
-              Sign out
-            </Button>
-          </div>
-        </div>
+        {/* Header Removed - managed by Layout */}
 
         {/* Key Metrics */}
+        <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-bold tracking-tight">Dashboard Overview</h2>
+             <div className="flex items-center space-x-2">
+                <Select value={timeRange} onValueChange={(v: any) => setTimeRange(v)}>
+                <SelectTrigger className="w-32">
+                    <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem value="24h">Last 24h</SelectItem>
+                    <SelectItem value="7d">Last 7 days</SelectItem>
+                    <SelectItem value="30d">Last 30 days</SelectItem>
+                </SelectContent>
+                </Select>
+            </div>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <MetricCard
             title="Total Spent"

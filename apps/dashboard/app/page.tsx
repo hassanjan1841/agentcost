@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { AuthButtons } from '@/components/auth/AuthButtons';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { DollarSign, Zap, Shield, TrendingUp } from 'lucide-react';
 
@@ -16,17 +17,8 @@ export default function HomePage() {
             Real-time cost tracking for OpenAI, Anthropic & Google. 
             Know what you're spending before the bill arrives.
           </p>
-          <div className="flex gap-4 justify-center">
-            <Link href="/auth/register">
-              <Button size="lg">
-                Get Started Free
-              </Button>
-            </Link>
-            <Link href="/auth/login">
-              <Button size="lg" variant="outline">
-                Sign In
-              </Button>
-            </Link>
+          <div className="mt-8">
+            <AuthButtons />
           </div>
         </div>
 
