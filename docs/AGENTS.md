@@ -77,4 +77,19 @@ npx tsx scripts/seed-demo-data.ts             # Seed demo data
 - **PRODUCTION_READINESS.md** - Missing features, production checklist, timeline (READ THIS!)
 - **LAUNCH.md** - Launch strategy, hour-by-hour checklist
 - **AGENTS.md** - This file - build commands, architecture, code style for agents
+- **CUSTOM_AUTH_PLAN.md** - Full custom authentication implementation plan
+- **PHASE_1_AUTH_IMPLEMENTATION.md** - Phase 1 setup summary (dependencies, migrations)
+- **EMAIL_SETUP.md** - Complete email configuration & usage guide
+- **EMAIL_IMPLEMENTATION_COMPLETE.md** - Email service implementation summary
+- **RESEND_NODEMAILER_INTEGRATION.md** - Email architecture (Resend + Nodemailer + Console)
 - Update docs when adding features, APIs, or significant changes. Use clear examples.
+
+## Email Service Structure
+
+- `packages/sdk/lib/email/` - Main email service (4 files)
+  - `index.ts` - Clean API export
+  - `service.ts` - High-level email functions
+  - `sender.ts` - Unified 3-tier sender (Resend → Nodemailer → Console)
+  - `templates.ts` - Reusable HTML email templates (DRY)
+- **Features:** 7 email types, 3 providers, zero code duplication, production-ready
+- **Environment:** RESEND_API_KEY (primary), SMTP_* (fallback), console (dev)

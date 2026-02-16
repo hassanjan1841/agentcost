@@ -1,17 +1,28 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/lib/auth-context';
 import { MetricCard } from '@/components/MetricCard';
 import { CostChart } from '@/components/CostChart';
 import { ProviderBreakdown } from '@/components/ProviderBreakdown';
 import { RecentRequests } from '@/components/RecentRequests';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { DollarSign, Zap, TrendingUp, Activity } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { DollarSign, Zap, TrendingUp, Activity, LogOut } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function DashboardPage() {
+  const router = useRouter();
+  const { user, loading: authLoading, logout } = useAuth();
   const [timeRange, setTimeRange] = useState<'24h' | '7d' | '30d'>('7d');
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.replace('/auth/login');
+    }
+  }, [user, authLoading, router]);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['metrics', timeRange],
@@ -22,6 +33,10 @@ export default function DashboardPage() {
     },
     refetchInterval: 5000, // Refresh every 5 seconds
   });
+
+  if (authLoading || !user) {
+    return null;
+  }
 
   if (isLoading) {
     return (
@@ -55,20 +70,26 @@ export default function DashboardPage() {
           <div>
             <h1 className="text-4xl font-bold text-gray-900">AgentCost Dashboard</h1>
             <p className="text-gray-600 mt-1">
-              Real-time AI API cost tracking
+              Welcome, {user.fullName}
             </p>
           </div>
           
-          <Select value={timeRange} onValueChange={(v: any) => setTimeRange(v)}>
-            <SelectTrigger className="w-32">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="24h">Last 24h</SelectItem>
-              <SelectItem value="7d">Last 7 days</SelectItem>
-              <SelectItem value="30d">Last 30 days</SelectItem>
-            </SelectContent>
-          </Select>
+          <div className="flex items-center gap-4">
+            <Select value={timeRange} onValueChange={(v: any) => setTimeRange(v)}>
+              <SelectTrigger className="w-32">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="24h">Last 24h</SelectItem>
+                <SelectItem value="7d">Last 7 days</SelectItem>
+                <SelectItem value="30d">Last 30 days</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button variant="ghost" size="sm" onClick={() => logout().then(() => router.push('/auth/login'))}>
+              <LogOut className="h-4 w-4 mr-2" />
+              Sign out
+            </Button>
+          </div>
         </div>
 
         {/* Key Metrics */}

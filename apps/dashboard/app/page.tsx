@@ -17,14 +17,16 @@ export default function HomePage() {
             Know what you're spending before the bill arrives.
           </p>
           <div className="flex gap-4 justify-center">
-            <Link href="/dashboard">
+            <Link href="/auth/register">
               <Button size="lg">
-                View Demo Dashboard
+                Get Started Free
               </Button>
             </Link>
-            <Button size="lg" variant="outline">
-              View on GitHub
-            </Button>
+            <Link href="/auth/login">
+              <Button size="lg" variant="outline">
+                Sign In
+              </Button>
+            </Link>
           </div>
         </div>
 
