@@ -1,11 +1,12 @@
 'use client';
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useState } from 'react';
-
+import { useState, useEffect } from 'react';
 import { Sidebar } from '@/components/dashboard/Sidebar';
 import { UserDropdown } from '@/components/dashboard/UserDropdown';
 import { MobileSidebar } from '@/components/dashboard/MobileSidebar';
+import { OnboardingWizard } from '@/components/onboarding/OnboardingWizard';
+import { ApiClient } from '@/lib/api-client';
 
 export default function DashboardLayout({
   children,
@@ -13,9 +14,35 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [queryClient] = useState(() => new QueryClient());
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [isChecking, setIsChecking] = useState(true);
+
+  useEffect(() => {
+    checkOnboardingStatus();
+  }, []);
+
+  const checkOnboardingStatus = async () => {
+    try {
+      const response = await ApiClient.get<{ completed: boolean }>('/api/onboarding/status');
+      setShowOnboarding(!response.completed);
+    } catch (err) {
+      console.error('Failed to check onboarding status:', err);
+    } finally {
+      setIsChecking(false);
+    }
+  };
+
+  if (isChecking) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900" />
+      </div>
+    );
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
+      <OnboardingWizard open={showOnboarding} />
       <div className="flex h-screen w-full overflow-hidden bg-white">
         <Sidebar />
         <div className="flex flex-1 flex-col overflow-hidden">
