@@ -5,8 +5,8 @@ import { verifyJWT } from '@/lib/auth';
 export async function GET(request: NextRequest) {
   try {
     // Get auth token from cookies
-    const token = request.cookies.get('auth_token')?.value;
-    
+    const token = request.cookies.get('token')?.value;
+
     if (!token) {
       return NextResponse.json(
         { error: 'Unauthorized' },
@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
         { status: 403 }
       );
     }
-    
+
     const budgets = await sql`
       SELECT 
         id::TEXT, 
@@ -77,8 +77,8 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     // Get auth token from cookies
-    const token = request.cookies.get('auth_token')?.value;
-    
+    const token = request.cookies.get('token')?.value;
+
     if (!token) {
       return NextResponse.json(
         { error: 'Unauthorized' },
@@ -166,8 +166,8 @@ export async function POST(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   try {
     // Get auth token from cookies
-    const token = request.cookies.get('auth_token')?.value;
-    
+    const token = request.cookies.get('token')?.value;
+
     if (!token) {
       return NextResponse.json(
         { error: 'Unauthorized' },

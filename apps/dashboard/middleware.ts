@@ -63,6 +63,11 @@ export async function middleware(request: NextRequest) {
     const isPublicPath = PUBLIC_PATHS.includes(pathname) || AUTH_PATHS.some(path => pathname.startsWith(path));
 
     if (!isValid && !isPublicPath) {
+        // If it's an API route (and not public), return 401 JSON
+        if (pathname.startsWith('/api/')) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
         const loginUrl = new URL('/auth/login', request.url);
         // Add ?from=... to redirect back after login
         loginUrl.searchParams.set('from', pathname);

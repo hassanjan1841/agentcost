@@ -1,95 +1,39 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@/lib/db';
-import { verifyJWT } from '@/lib/auth';
+import { withAuth } from '@/lib/api-middleware';
 
-export async function GET(request: NextRequest) {
-  try {
-    // Get auth token from cookies
-    const token = request.cookies.get('auth_token')?.value;
-    
-    if (!token) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
-    }
+export const GET = withAuth(async (request: NextRequest, user) => {
+  // Get projects owned by this user
+  const result = await sql`
+    SELECT id, name, api_key, owner_id, created_at, updated_at
+    FROM projects
+    WHERE owner_id = ${user.userId}
+    ORDER BY created_at DESC
+  `;
 
-    // Verify JWT and get user ID
-    const decoded = verifyJWT(token);
-    if (!decoded || !decoded.userId) {
-      return NextResponse.json(
-        { error: 'Invalid token' },
-        { status: 401 }
-      );
-    }
+  return NextResponse.json({
+    projects: result.rows
+  });
+});
 
-    // Get projects owned by this user
-    const result = await sql`
-      SELECT id, name, api_key, owner_id, created_at, updated_at
-      FROM projects
-      WHERE owner_id = ${decoded.userId}
-      ORDER BY created_at DESC
-    `;
+export const POST = withAuth(async (request: NextRequest, user) => {
+  const { name } = await request.json();
 
-    return NextResponse.json({
-      projects: result.rows
-    });
-
-  } catch (error) {
-    console.error('Projects error:', error);
+  if (!name || name.trim().length === 0) {
     return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
+      { error: 'Project name required' },
+      { status: 400 }
     );
   }
-}
 
-export async function POST(request: NextRequest) {
-  try {
-    // Get auth token from cookies
-    const token = request.cookies.get('auth_token')?.value;
-    
-    if (!token) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
-    }
+  // Create project with owner_id
+  const result = await sql`
+    INSERT INTO projects (name, owner_id, created_by, updated_by)
+    VALUES (${name.trim()}, ${user.userId}, ${user.userId}, ${user.userId})
+    RETURNING id, name, api_key, owner_id, created_at, updated_at
+  `;
 
-    // Verify JWT and get user ID
-    const decoded = verifyJWT(token);
-    if (!decoded || !decoded.userId) {
-      return NextResponse.json(
-        { error: 'Invalid token' },
-        { status: 401 }
-      );
-    }
-
-    const { name } = await request.json();
-
-    if (!name || name.trim().length === 0) {
-      return NextResponse.json(
-        { error: 'Project name required' },
-        { status: 400 }
-      );
-    }
-
-    // Create project with owner_id
-    const result = await sql`
-      INSERT INTO projects (name, owner_id, created_by, updated_by)
-      VALUES (${name.trim()}, ${decoded.userId}, ${decoded.userId}, ${decoded.userId})
-      RETURNING id, name, api_key, owner_id, created_at, updated_at
-    `;
-
-    return NextResponse.json({
-      project: result.rows[0]
-    });
-
-  } catch (error) {
-    console.error('Create project error:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
-  }
-}
+  return NextResponse.json({
+    project: result.rows[0]
+  });
+});

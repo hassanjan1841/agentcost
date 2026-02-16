@@ -6,8 +6,8 @@ import { verifyJWT } from '@/lib/auth';
 export async function GET(request: NextRequest) {
   try {
     // Get auth token from cookies
-    const token = request.cookies.get('auth_token')?.value;
-    
+    const token = request.cookies.get('token')?.value;
+
     if (!token) {
       return NextResponse.json(
         { error: 'Unauthorized' },
@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
         { status: 403 }
       );
     }
-    
+
     const metrics = await getMetrics(projectId, range);
 
     return NextResponse.json(metrics);
