@@ -29,7 +29,9 @@ export default function DashboardPage() {
   const { data: projectsData, error: projectsError } = useQuery({
     queryKey: ['projects'],
     queryFn: async () => {
-      const res = await fetch('/api/projects');
+      const res = await fetch('/api/projects', {
+        credentials: 'include',
+      });
       if (!res.ok) {
         const errorData = await res.json().catch(() => ({}));
         throw new Error(errorData.error || `Failed to fetch projects: ${res.status}`);
@@ -49,7 +51,9 @@ export default function DashboardPage() {
   const { data, isLoading, error } = useQuery({
     queryKey: ['metrics', timeRange, projectId],
     queryFn: async () => {
-      const res = await fetch(`/api/costs?range=${timeRange}&projectId=${projectId}`);
+      const res = await fetch(`/api/costs?range=${timeRange}&projectId=${projectId}`, {
+        credentials: 'include',
+      });
       if (!res.ok) throw new Error('Failed to fetch');
       return res.json();
     },
